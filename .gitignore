@@ -1,0 +1,52 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.env
+.venv
+venv/
+ENV/
+env/
+env.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+pip-wheel-metadata/
+*.egg
+*.manifest
+*.spec
+
+# ---- IDEs & Editors ----
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ---- OS Files ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Logs ----
+*.log
+logs/
+*.out
+
+# ---- Testing ----
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# ---- Databases ----
+*.db
+*.sqlite3
+
+# ---- Environment ----
+.env.local
+.env.development
