@@ -1,4 +1,4 @@
-# 🔐 FastAPI Authentication & Authorization Service
+# FastAPI Authentication & Authorization Service
 
 A fully functional **authentication and authorization backend** built with **FastAPI**, implementing:
 
@@ -22,6 +22,4 @@ Redis-ready structure for future logout/blacklist
 FastAPI interactive docs (Swagger UI)
 
 ---
-
-## 🏗️ Project Structure
 
