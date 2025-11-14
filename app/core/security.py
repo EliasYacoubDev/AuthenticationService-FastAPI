@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from app.core.config import settings
 from jose import jwt, JWTError
 from typing import Optional
+from app.core.redis_client import redis_client
 
 def _expire(delta) -> int:
     return int((datetime.now(tz=timezone.utc) + delta).timestamp())
@@ -27,3 +28,9 @@ def decode_refresh_token(token: str) -> Optional[str]:
         return data.get("sub")
     except JWTError:
         return None
+
+def blacklist_token(token: str, expires_in: int):
+    redis_client.setex(f"blacklist:{token}", expires_in, "true")
+
+def is_token_blacklisted(token: str) -> bool:
+    return redis_client.exists(f"blacklist:{token}")

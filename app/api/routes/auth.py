@@ -6,7 +6,10 @@ from app.db.session import get_db
 from app.models.user import User
 from app.services.auth_service import hash_password, verify_password, get_current_user
 from app.core.security import create_access_token, create_refresh_token, decode_refresh_token
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from app.core.security import blacklist_token
 
+security_scheme = HTTPBearer(auto_error=False)
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register", response_model=UserOut, status_code=201)
@@ -48,3 +51,11 @@ def refresh(refresh_token:str, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserOut)
 def me(current = Depends(get_current_user)):
     return current
+
+@router.post("/logout")
+def logout(creds: HTTPAuthorizationCredentials = Depends(security_scheme)):
+    token = creds.credentials
+    # Blacklist for remaining lifetime of token
+    expires_in = 900  # e.g. 15 minutes if that's your access token expiry
+    blacklist_token(token, expires_in)
+    return {"message": "Successfully logged out"}

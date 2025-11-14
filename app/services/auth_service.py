@@ -5,6 +5,7 @@ from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.models.user import User
 from sqlalchemy.orm import Session
+from app.core.security import is_token_blacklisted
 
 security_scheme = HTTPBearer(auto_error=False)
 def hash_password(raw: str) -> str:
@@ -22,6 +23,8 @@ def get_current_user(
 ) -> User:
     if not creds:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing credentials")
+    if is_token_blacklisted(creds.credentials):
+        raise HTTPException(status_code=401, detail="Token has been revoked")
     user_id = decode_access_token(creds.credentials)
     if not user_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
